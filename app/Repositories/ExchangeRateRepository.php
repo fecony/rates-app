@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -54,18 +55,34 @@ class ExchangeRateRepository
     }
 
     /**
+     * Method to generate past 7 days
+     */
+    public function getLast7DaysDates(): array
+    {
+        $dates = [];
+        $today = Carbon::now();
+
+        for ($i = 0; $i < 7; $i++) {
+            $dates[] = $today->format('Y-m-d');
+            $today->subDay();
+        }
+
+        return $dates;
+    }
+
+    /**
      * Get rates for specific date and currency
      *
-     *
+     * @param  mixed  $currencies
      * @return array
      */
     public function getRatesByDateAndCurrency(
         ?string $date = null,
-        ?string $currency = null
+        ?array $currencies = null
     ) {
-        $cacheKey = self::RATES_CACHE_KEY_PREFIX . ($date ?? 'all') . '_' . ($currency ?? 'all');
+        $cacheKey = self::RATES_CACHE_KEY_PREFIX . ($date ?? 'all') . '_' . (implode(',', $currencies) ?? 'all');
 
-        return Cache::remember($cacheKey, self::CACHE_DURATION_MINUTES, function () use ($date, $currency) {
+        return Cache::remember($cacheKey, self::CACHE_DURATION_MINUTES, function () use ($date, $currencies) {
             $query = 'SELECT * FROM exchange_rates WHERE 1=1';
             $bindings = [];
 
@@ -74,9 +91,10 @@ class ExchangeRateRepository
                 $bindings['date'] = $date;
             }
 
-            if ($currency) {
-                $query .= ' AND currency = :currency';
-                $bindings['currency'] = $currency;
+            if ($currencies && count($currencies) > 0) {
+                $preparedPlaceholders = implode(',', array_fill(0, count($currencies), '?'));
+                $query .= ' AND currency IN (' . $preparedPlaceholders . ')';
+                $bindings = array_merge($bindings, $currencies);
             }
 
             $query .= ' ORDER BY date DESC';

@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\DB;
 class ExchangeRateRepository
 {
     private const AVAILABLE_DATES_CACHE_KEY = 'available_dates';
+
     private const AVAILABLE_CURRENCIES_CACHE_KEY = 'available_currencies';
+
     private const RATES_CACHE_KEY_PREFIX = 'rates_';
+
     private const CACHE_DURATION_MINUTES = 60 * 24; // 24 hours
 
     /**

@@ -2,6 +2,8 @@
 
 App to fetch, store and display rates from bank.lv
 
+<p align="center"><img src="https://github.com/user-attachments/assets/1f90e111-6901-4240-9044-00058d35b2ba" width="800" alt="Rates app"></p>
+
 ## Prerequisites
 
 Things you will need:

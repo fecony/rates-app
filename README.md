@@ -59,6 +59,13 @@ To run app in Docker container make sure that Docker is running.
 Run `./vendor/bin/sail artisan key:generate` to generate app key.
 
 After you application is running in Docker container run `./vendor/bin/sail artisan migrate` to run migration files.
+
+Build frontend assets.
+
+```bash
+./vendor/bin/sail npm run build
+```
+
 Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
 
 ## Fetching rates

@@ -15,13 +15,13 @@ Things you will need:
 Clone the project
 
 ```bash
-git clone git@github.com:Fecony/rates_app.git
+git clone git@github.com:fecony/rates-app.git
 ```
 
 Go to the project directory
 
 ```bash
-cd rates_app
+cd rates-app
 ```
 
 Copy .env.example file to .env on the root folder.
